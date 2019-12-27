@@ -5,21 +5,21 @@ data:2019-12-109:39
 author:Grey
 des:
 """
-from urllib.request import urlopen
-from bs4 import BeautifulSoup
+
+from requests import Session,Request,get
+import requests
 import re
-import datetime,random
+from requests.auth import HTTPBasicAuth
 
-random.seed(datetime.datetime.now())
-def getLinks(articleUrl):
-    print("http://en.wikipedia.org" + articleUrl)
-    html = urlopen("http://en.wikipedia.org"+articleUrl)
+url = 'http://stockpage.10jqka.com.cn/600139/funds/'
+data = {
+    'name':'germey'
+}
 
-    bsObj = BeautifulSoup(html)
-    return bsObj.find('div',{'id':'bodyContent'}).findAll('a',href=re.compile('^(/wiki/)((?!:).)*$'))
-links = getLinks('/wiki/Kevin_Bacon')
-while len(links)>0:
-    newArticle = links[random.randint(0,len(links)-1)].attrs['href']
-    print(newArticle)
-    links=getLinks(newArticle)
+headers = {
+    'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.79 Safari/537.36'
+}
+s = Session()
+r = s.get(url,headers=headers)
 
+print (r.text)
